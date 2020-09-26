@@ -4,6 +4,7 @@ const routes = express.Router();
 // Controllers
 const VendasController = require('./controllers/VendasController');
 const UserController = require('./controllers/UserController');
+const SubscriptionController = require('./controllers/SubscriptionController');
 
 // Rotas
 routes.get('/',(req, res) => {
@@ -13,7 +14,9 @@ routes.get('/',(req, res) => {
 // Serviços
 routes.post('/iugu', VendasController.iugu);
 
+// Criar
+routes.post('/users', UserController.store); 
 
-routes.post('/users', UserController.store); // Criar
+routes.post('/subscription', SubscriptionController.store); 
 
 module.exports = routes;
