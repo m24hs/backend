@@ -1,13 +1,17 @@
+const { User } = require("../models");
+
+const Iugu = require("../services/Iugu");
+
 module.exports = {
-  formatRequest: async (request) => {
-    return await request
-      .then(function (item) {
+  async store(req, res) {
+    User.create(req.body)
+      .then((item) => {
         res.json({
           status: "success",
           data: item,
         });
       })
-      .catch(function (err) {
+      .catch((err) => {
         res.json({
           status: "error",
           data: err,
