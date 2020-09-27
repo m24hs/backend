@@ -17,6 +17,6 @@ routes.post('/iugu', VendasController.iugu);
 // Criar
 routes.post('/users', UserController.store); 
 
-routes.post('/subscription', SubscriptionController.store); 
+routes.post('/subscriptions/:type', SubscriptionController.store); 
 
 module.exports = routes;

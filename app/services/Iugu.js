@@ -17,7 +17,7 @@ module.exports = {
       complement: "",
     });
   },
-  async createToken(params) {
+  async createPaymentToken(params) {
     return api("https://api.iugu.com/v1/payment_token", {
       data: {
         number: "4111111111111111",
@@ -33,9 +33,10 @@ module.exports = {
     });
   },
   async createPaymentMethod(params) {
-    return api("https://api.iugu.com/v1/customers/F9EE851CC99F458DAF059821266B0CFD/payment_methods", {
-      token: "9004ab96-c162-40ec-bac6-9435992607cb",
-      description: "Cartão VISA",
+    const { user, token, description } = params;
+    return api(`https://api.iugu.com/v1/customers/${user}/payment_methods`, {
+      token,
+      description,
       set_as_default: true,
     });
   },
@@ -46,14 +47,16 @@ module.exports = {
       set_as_default: true,
     });
   },  
-  async createSubscription() {
+  async createSubscription(params) {
+    const { user, plan, payable_with } = params;
     return api("https://api.iugu.com/v1/subscriptions", {
         two_step: false,
         suspend_on_invoice_expired: false,
         only_charge_on_due_date: false,
-        customer_id: '8DADFFEA9D6449589A4B81FB828EE199',
+        customer_id: user,
         only_on_charge_success: false,
-        plan_identifier: 'anual-m24'
+        payable_with,
+        plan_identifier: plan
       });
   }
 };
