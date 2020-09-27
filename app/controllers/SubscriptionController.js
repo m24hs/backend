@@ -20,11 +20,9 @@ module.exports = {
         }
 
         // Cria assinatura
-        const payable_with = type === "credit-card" ? "credit_card " : "bank_slip";
+        const payable_with = type === "credit-card" ? "credit_card" : "bank_slip";
         const responseSubscription = await Iugu.createSubscription({ user, plan, payable_with });
-        const url = responseSubscription.recent_invoices[0].secure_url;
 
-        console.log(url);
-        res.json(responseSubscription);
+        res.json({ status: "success",data: responseSubscription});
     }
 };

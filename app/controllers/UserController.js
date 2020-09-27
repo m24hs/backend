@@ -1,21 +1,13 @@
 const { User } = require("../models");
 
+const { formatResponse } = require("../helpers")
+
 const Iugu = require("../services/Iugu");
 
 module.exports = {
   async store(req, res) {
-    User.create(req.body)
-      .then((item) => {
-        res.json({
-          status: "success",
-          data: item,
-        });
-      })
-      .catch((err) => {
-        res.json({
-          status: "error",
-          data: err,
-        });
-      });
+    const response = await formatResponse(User.create(req.body));
+    console.log(response);
+    res.json(response);
   },
 };
