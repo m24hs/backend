@@ -1,5 +1,5 @@
 module.exports = {
-  formatResponse: async (request) => {
+  formatResponseSequelize: async (request) => {
     try {
       const post = await request;
       return {

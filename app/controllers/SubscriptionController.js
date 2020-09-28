@@ -1,13 +1,10 @@
 const Iugu = require('../services/Iugu');
 
 module.exports = {
-    async store(req, res) {
-        var type = req.params.type;
-
+    async store(req, res) {       
         // Variáveis auxiliares
-        const user = "F9EE851CC99F458DAF059821266B0CFD";
+        const { user, type } = req.params;
         const plan = "mensal";
-        //512464DE048B4658A25F2C7D57215287
 
         if (type === "credit-card") {
             // Cria token de pagamento

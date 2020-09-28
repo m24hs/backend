@@ -2,20 +2,7 @@ const axios = require("axios").default;
 
 module.exports = {
   async createCustomers(params) {
-    return api("https://api.iugu.com/v1/customers", {
-      email: "aryane_toffeti@teste.com.br",
-      name: "Aryane Toffeti",
-      phone: "998386891",
-      phone_prefix: "14",
-      cpf_cnpj: "05855679055",
-      zip_code: "17207050",
-      number: "57",
-      street: "Orozimbo Loureiro",
-      city: "Jaú",
-      state: "SP",
-      district: "Vila Hilst",
-      complement: "",
-    });
+    return api("https://api.iugu.com/v1/customers", params);
   },
   async createPaymentToken(params) {
     return api("https://api.iugu.com/v1/payment_token", {
