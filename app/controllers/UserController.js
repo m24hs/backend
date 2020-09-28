@@ -41,7 +41,7 @@ module.exports = {
 
     // Se houver erros
     if (iuguUser.hasOwnProperty("errors")) {
-      return res.json({ status: "error", data: "Erro no cadastro." });
+      return res.json({ status: "error", data: "Erro no cadastro, por favor, tente novamente." });
     }
 
     // Grava usuário no banco
