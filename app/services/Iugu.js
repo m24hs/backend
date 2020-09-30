@@ -29,9 +29,11 @@ module.exports = {
   },
   async createPlan(params) {
     return api("https://api.iugu.com/v1/plans", {
-      token: "9004ab96-c162-40ec-bac6-9435992607cb",
-      description: "Cartão VISA",
-      set_as_default: true,
+      name: 'mensal',
+      identifier: 'mensal',
+      interval: 1,
+      interval_type: 'months',
+      value_cents: 5000
     });
   },  
   async createSubscription(params) {

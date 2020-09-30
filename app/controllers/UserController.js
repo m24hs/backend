@@ -5,6 +5,10 @@ const { formatResponseSequelize } = require("../helpers");
 const Iugu = require("../services/Iugu");
 
 module.exports = {
+  async index(req, res) {
+    const users = await User.findAll();
+    res.json(users);
+  },
   async store(req, res) {
     // Variáveis auxiliares
     const {
@@ -41,7 +45,10 @@ module.exports = {
 
     // Se houver erros
     if (iuguUser.hasOwnProperty("errors")) {
-      return res.json({ status: "error", data: "Erro no cadastro, por favor, tente novamente." });
+      return res.json({
+        status: "error",
+        data: "Erro no cadastro, por favor, tente novamente.",
+      });
     }
 
     // Grava usuário no banco

@@ -15,8 +15,10 @@ routes.get('/',(req, res) => {
 routes.post('/iugu', VendasController.iugu);
 
 // Criar
+routes.get('/users', UserController.index); 
 routes.post('/users', UserController.store); 
 
+routes.get('/subscriptions', SubscriptionController.index); 
 routes.post('/subscriptions/:user/:type', SubscriptionController.store); 
 
 module.exports = routes;
