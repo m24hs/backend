@@ -4,6 +4,7 @@ const routes = express.Router();
 // Controllers
 const VendasController = require('./controllers/VendasController');
 const UserController = require('./controllers/UserController');
+const ServiceController = require('./controllers/ServiceController');
 const SubscriptionController = require('./controllers/SubscriptionController');
 
 // Rotas
@@ -17,6 +18,9 @@ routes.post('/iugu', VendasController.iugu);
 // Criar
 routes.get('/users', UserController.index); 
 routes.post('/users', UserController.store); 
+
+routes.get('/services', ServiceController.index); 
+routes.post('/services', ServiceController.store); 
 
 routes.get('/subscriptions', SubscriptionController.index); 
 routes.post('/subscriptions/:user/:type', SubscriptionController.store); 
