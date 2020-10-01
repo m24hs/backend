@@ -21,8 +21,12 @@ module.exports = {
       }, 
       description: {  
         allowNull: false,      
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
       }, 
+      content: {  
+        allowNull: false,      
+        type: DataTypes.TEXT,
+      },       
       plan: {  
         allowNull: false,      
         type: DataTypes.STRING,

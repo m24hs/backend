@@ -19,8 +19,8 @@ routes.post('/iugu', VendasController.iugu);
 routes.get('/users', UserController.index); 
 routes.post('/users', UserController.store); 
 
-routes.get('/services', ServiceController.index); 
-routes.post('/services', ServiceController.store); 
+routes.get('/services/:id?', ServiceController.index); 
+routes.post('/services/:id?', ServiceController.store); 
 
 routes.get('/subscriptions', SubscriptionController.index); 
 routes.post('/subscriptions/:user/:type', SubscriptionController.store); 
