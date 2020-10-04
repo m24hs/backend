@@ -22,7 +22,7 @@ routes.post("/users", UserController.store);
 routes.get("/services/:id?", ServiceController.index);
 routes.post("/services", ServiceController.store);
 
-routes.get("/subscriptions", SubscriptionController.index);
+routes.get("/subscriptions/:id?", SubscriptionController.index);
 routes.post("/subscriptions/:user/:type", SubscriptionController.store);
 
 module.exports = routes;

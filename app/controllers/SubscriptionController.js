@@ -6,14 +6,27 @@ const Iugu = require("../services/Iugu");
 
 module.exports = {
   async index(req, res) {
-    const subscription = await Subscription.findAll({
-      include: [{
-          model: User,
-          required: true,
-          attributes: ['name'],
-      }],
-    });
-    res.json(subscription);
+    // Id
+    const id = req.params.id || null;
+
+    // Consulta
+    const join = [
+      {
+        model: User,
+        required: true,
+      },
+    ];
+    let subscription = {};
+    if (id !== null) {
+      subscription = await Subscription.findByPk(id, {
+        include: join,
+      });
+    } else {
+      subscription = await Subscription.findAll({
+        include: join,
+      });
+    }
+    res.json(subscription || {});
   },
   async store(req, res) {
     // Variáveis auxiliares
