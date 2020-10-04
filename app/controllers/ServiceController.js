@@ -19,9 +19,6 @@ module.exports = {
     res.json(services || {});
   },
   async store(req, res) {  
-    // Id
-    const id = req.params.id || null;
-
     // Grava no banco
     const response = await formatResponseSequelize(Service.upsert(
       req.body, 

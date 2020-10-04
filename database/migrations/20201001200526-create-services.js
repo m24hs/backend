@@ -7,7 +7,7 @@ module.exports = {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },          
-      name: {  
+      title: {  
         allowNull: false,      
         type: DataTypes.STRING,
       },      
@@ -23,7 +23,7 @@ module.exports = {
         allowNull: false,      
         type: DataTypes.TEXT,
       }, 
-      content: {  
+      page: {  
         allowNull: false,      
         type: DataTypes.TEXT,
       },       

@@ -29,6 +29,7 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
+/*
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
@@ -38,5 +39,6 @@ db.subscription = require('./subscription.js')(sequelize, Sequelize);;
 
 db.user.hasOne(db.subscription, {foreignKey: 'user'});
 //db.user.hasOne(db.subscription, {foreignKey: 'user', targetKey: 'id'});
+*/
 
 module.exports = db;

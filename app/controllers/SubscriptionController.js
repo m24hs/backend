@@ -7,7 +7,11 @@ const Iugu = require("../services/Iugu");
 module.exports = {
   async index(req, res) {
     const subscription = await Subscription.findAll({
-
+      include: [{
+          model: User,
+          required: true,
+          attributes: ['name'],
+      }],
     });
     res.json(subscription);
   },
