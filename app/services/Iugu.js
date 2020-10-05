@@ -5,14 +5,15 @@ module.exports = {
     return api("https://api.iugu.com/v1/customers", params);
   },
   async createPaymentToken(params) {
+    const { number, verification_value, first_name, last_name, month, year } = params;
     return api("https://api.iugu.com/v1/payment_token", {
       data: {
-        number: "4111111111111111",
-        verification_value: "767",
-        first_name: "MARCELO",
-        last_name: "ROSSINI",
-        month: "12",
-        year: "2026",
+        number,
+        verification_value,
+        first_name,
+        last_name,
+        month,
+        year,
       },
       account_id: "88DD0F7517A9F644071BFE787B0E5250",
       method: "credit_card",

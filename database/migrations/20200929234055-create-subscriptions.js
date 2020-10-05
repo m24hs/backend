@@ -10,7 +10,7 @@ module.exports = {
       user: {
         type: DataTypes.INTEGER,
         references: {
-          model: 'users',
+          model: 'Users',
           key: 'id'
         }  
       },              
