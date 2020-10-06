@@ -1,6 +1,6 @@
 const { Subscription, User } = require("../models");
 
-const { formatResponseSequelize } = require("../helpers");
+const { formatResponseSequelize, formatResponseError } = require("../helpers");
 
 const Iugu = require("../services/Iugu");
 
@@ -54,8 +54,16 @@ module.exports = {
         // Cria token de pagamento
         const responsePaymentToken = await Iugu.createPaymentToken(formData);
 
-        if (responsePaymentToken.hasOwnProperty("errors"))
+        if (responsePaymentToken.hasOwnProperty("errors")) {
+          const errors = responsePaymentToken.errors;
+          if (errors.first_name) {
+            throw new Error("Nome do titular inválido!");            
+          } else if (errors.number) {
+            throw new Error("Número do cartão inválido!");
+          }
           throw new Error("Erro na geração do token!");
+          console.log(errors);
+        }
 
         // Cria forma de pagamento
         const token = responsePaymentToken.id;
@@ -80,7 +88,7 @@ module.exports = {
 
       res.json({ status: "success", data: responseSubscription });
     } catch (error) {
-      res.json({ status: "error", data: error.message });
+      res.json(formatResponseError(error.message));
     }
   },
 };

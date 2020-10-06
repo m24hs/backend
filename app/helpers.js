@@ -13,4 +13,7 @@ module.exports = {
       };
     }
   },
+  formatResponseError: (response) => {
+    return { status: "error", data: response };
+  },
 };

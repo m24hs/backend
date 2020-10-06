@@ -8,10 +8,17 @@ module.exports = {
   async index(req, res) {    
     // Id
     const id = req.params.id || null;
+    const where = req.query.where || null;
     
     // Consulta
     let services = {};
-    if (id !== null) {
+    if (where === "url") {
+      services = await Service.findOne({
+        where: {
+          url: id,
+        },
+      });
+    } else if (id !== null) {
       services = await Service.findByPk(id);
     } else {
       services = await Service.findAll();

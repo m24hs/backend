@@ -16,7 +16,7 @@ routes.get("/", (req, res) => {
 routes.post("/iugu", VendasController.iugu);
 
 // Criar
-routes.get("/users", UserController.index);
+routes.get("/users/:id?", UserController.index);
 routes.post("/users", UserController.store);
 
 routes.get("/services/:id?", ServiceController.index);
