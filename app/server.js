@@ -5,7 +5,7 @@ const cors = require('cors');
 const server = express();
 
 server.use(cors());
-server.use(express.json());
+server.use(express.json({limit:1024*1024*20, type:'application/json'}));
 server.use(routes);
 
 server.listen(process.env.PORT || 3333);

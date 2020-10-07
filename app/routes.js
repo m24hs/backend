@@ -21,6 +21,7 @@ routes.post("/users", UserController.store);
 
 routes.get("/services/:id?", ServiceController.index);
 routes.post("/services", ServiceController.store);
+routes.delete("/services/:id?", ServiceController.delete);
 
 routes.get("/subscriptions/:id?", SubscriptionController.index);
 routes.post("/subscriptions/:user/:type", SubscriptionController.store);

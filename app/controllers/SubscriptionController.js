@@ -1,4 +1,4 @@
-const { Subscription, User } = require("../models");
+const { Subscription, User, Service } = require("../models");
 
 const { formatResponseSequelize, formatResponseError } = require("../helpers");
 
@@ -31,10 +31,19 @@ module.exports = {
   async store(req, res) {
     // Variáveis auxiliares
     const { user, type } = req.params;
+    const { service } = req.query;
     const formData = req.body;
-    const plan = "mensal";
 
     try {
+      // Busca plano no db
+      const services = await Service.findOne({
+        where: {
+          url: service,
+        },
+      });
+
+      if (!services) throw new Error("Serviço não encontrado, contate o suporte!");
+
       // Usuário banco
       const userDB = await User.findAll({
         where: {
@@ -57,7 +66,7 @@ module.exports = {
         if (responsePaymentToken.hasOwnProperty("errors")) {
           const errors = responsePaymentToken.errors;
           if (errors.first_name) {
-            throw new Error("Nome do titular inválido!");            
+            throw new Error("Nome do titular inválido!");
           } else if (errors.number) {
             throw new Error("Número do cartão inválido!");
           }
@@ -75,15 +84,14 @@ module.exports = {
         });
 
         if (responsePaymentMethod.hasOwnProperty("errors"))
-          throw new Error("Não foi possivel concluir o pagamento!");        
+          throw new Error("Não foi possivel concluir o pagamento!");
       }
 
       // Cria assinatura
-      const payable_with = type === "credit-card" ? "credit_card" : "bank_slip";
       const responseSubscription = await Iugu.createSubscription({
         user,
-        plan,
-        payable_with,
+        plan: services.plan,
+        payable_with: type,
       });
 
       res.json({ status: "success", data: responseSubscription });

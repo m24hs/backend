@@ -1,15 +1,19 @@
 const { Service } = require("../models");
 
-const { formatResponseSequelize } = require("../helpers");
+const {
+  formatResponseSequelize,
+  formatResponseError,
+  generateUrlName,
+} = require("../helpers");
 
 const Iugu = require("../services/Iugu");
 
 module.exports = {
-  async index(req, res) {    
+  async index(req, res) {
     // Id
     const id = req.params.id || null;
     const where = req.query.where || null;
-    
+
     // Consulta
     let services = {};
     if (where === "url") {
@@ -25,19 +29,49 @@ module.exports = {
     }
     res.json(services || {});
   },
-  async store(req, res) {  
-    // Grava no banco
-    const response = await formatResponseSequelize(Service.upsert(
-      req.body, 
-      { returning: true } 
-    ));
-    /*
-    const response = await formatResponseSequelize(
-      Service.create(req.body)
-    );
-    */
+  async store(req, res) {
+    const data = req.body;
 
-    // Retorna
-    return res.json(response);
+    try {    
+      const responseCreatePlan = await Iugu.createPlan({
+        name: data.title,
+        price: data.price,
+      });
+
+      if (responseCreatePlan.hasOwnProperty("errors")) {
+        throw new Error("Não foi possivel cadastrar o plano!");
+      }
+
+      // Grava no banco
+      const response = await formatResponseSequelize(
+        Service.upsert(
+          { ...data, url: generateUrlName(data.title), plan: responseCreatePlan.identifier },
+          { returning: true }
+        )
+      );
+
+      return res.json(response);
+    } catch (error) {
+      return res.json(formatResponseError(error.message));
+    }
   },
+  async delete(req, res) {
+    const id = req.params.id || null;
+    
+    try {
+      if (id === null) 
+        throw new Error("ID não encontrado.");
+
+      // Procura
+      const service = await Service.findByPk(id);
+
+      // Deleta
+      if (service) {
+        service.destroy();
+      }      
+      res.json({});
+    } catch (error) {
+      return res.json(formatResponseError(error.message));
+    }    
+  },  
 };
