@@ -67,7 +67,7 @@ module.exports = {
       suspend_on_invoice_expired: false,
       only_charge_on_due_date: false,
       customer_id: user,
-      only_on_charge_success: false,
+      only_on_charge_success: payable_with === "credit_card" ? true : false,
       payable_with,
       plan_identifier: plan,
     });
