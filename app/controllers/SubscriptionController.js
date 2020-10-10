@@ -59,7 +59,7 @@ module.exports = {
         })
       );
 
-      if (type === "credit-card") {
+      if (type === "credit_card") {
         // Cria token de pagamento
         const responsePaymentToken = await Iugu.createPaymentToken(formData);
 
@@ -93,6 +93,10 @@ module.exports = {
         plan: services.plan,
         payable_with: type,
       });
+
+      // Verifica se deu certo com a cobrança
+      if (responseSubscription.hasOwnProperty("errors"))
+        throw new Error("Falha na cobrança, verifique seus dados e tente novamente!")
 
       res.json({ status: "success", data: responseSubscription });
     } catch (error) {
