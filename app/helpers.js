@@ -9,7 +9,7 @@ module.exports = {
     } catch (error) {
       return {
         status: "error",
-        error: error.message,
+        data: error.message,
       };
     }
   },
