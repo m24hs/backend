@@ -31,9 +31,9 @@ module.exports = {
     res.json(services || {});
   },
   async store(req, res) {
-    const data = {"title": "ÂSOASDÂSD Gestão Preventiva de Motos", "description": "", "page": "", "price": "50.00", "image": ""};//req.body;
-console.log(data);
-    try {     
+    const data = req.body;
+
+    try {    
       const responseCreatePlan = await Iugu.createPlan({
         name: data.title,
         price: data.price,
@@ -47,7 +47,7 @@ console.log(data);
       const response = await formatResponseSequelize(
         Service.upsert(
           { ...data, url: generateUrlName(data.title), plan: responseCreatePlan.identifier },
-          { returning: true }
+          { returning: true, logging: notOnlyALogger }
         )
       );
 
@@ -76,3 +76,9 @@ console.log(data);
     }    
   },  
 };
+
+function notOnlyALogger(msg){
+  console.log('hey, Im a single log');
+  //do whatever you need in here
+  console.log(msg);
+}
