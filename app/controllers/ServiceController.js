@@ -31,7 +31,7 @@ module.exports = {
     res.json(services || {});
   },
   async store(req, res) {
-    const data = req.body;
+    const data = JSON.parse( JSON.stringify( req.body ) );
 
     try {    
       const responseCreatePlan = await Iugu.createPlan({
@@ -47,7 +47,7 @@ module.exports = {
       const response = await formatResponseSequelize(
         Service.upsert(
           { ...data, url: generateUrlName(data.title), plan: responseCreatePlan.identifier },
-          { returning: true, logging: notOnlyALogger }
+          { returning: true }
         )
       );
 
@@ -76,9 +76,3 @@ module.exports = {
     }    
   },  
 };
-
-function notOnlyALogger(msg){
-  console.log('hey, Im a single log');
-  //do whatever you need in here
-  console.log(msg);
-}
