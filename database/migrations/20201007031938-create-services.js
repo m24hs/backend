@@ -2,7 +2,6 @@ module.exports = {
   up(queryInterface, DataTypes) {
     return Promise.all([
       queryInterface.addColumn("Services", "contract", {
-        allowNull: false,
         type: DataTypes.TEXT("medium"),
       }),
       queryInterface.changeColumn("Services", "image", {

@@ -7,33 +7,27 @@ module.exports = {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },          
-      title: {  
-        allowNull: false,      
+      title: {          
         type: DataTypes.STRING,
       },      
-      url: {  
-        allowNull: false,      
+      url: {          
         type: DataTypes.STRING,
       }, 
-      image: {  
-        allowNull: false,      
+      image: {          
         type: DataTypes.STRING,
       }, 
-      description: {  
-        allowNull: false,      
+      description: {          
         type: DataTypes.TEXT,
       }, 
-      page: {  
-        allowNull: false,      
+      page: {          
         type: DataTypes.TEXT,
       },       
-      plan: {  
-        allowNull: false,      
+      plan: {          
         type: DataTypes.STRING,
       },       
-      price: {  
-        allowNull: false,      
+      price: {          
         type: DataTypes.FLOAT,
+        defaultValue: 0.00,        
       },       
       createdAt: {
         allowNull: false,

@@ -1,3 +1,5 @@
+// Models
+const { Settings } = require("../models");
 
 const axios = require("axios").default;
 
@@ -8,6 +10,7 @@ module.exports = {
     return post("https://api.iugu.com/v1/customers", params);
   },
   async createPaymentToken(params) {
+    const { iugu_account_id } = await iuguData();
     const {
       number,
       verification_value,
@@ -25,7 +28,7 @@ module.exports = {
         month,
         year,
       },
-      account_id: "88DD0F7517A9F644071BFE787B0E5250",
+      account_id: iugu_account_id,
       method: "credit_card",
       test: true,
     });
@@ -42,12 +45,14 @@ module.exports = {
     const { name, price } = params;
     const identifier = generateUrlName(name);
 
-    const plan = await get(`https://api.iugu.com/v1/plans/identifier/${identifier}`)
-    
+    const plan = await get(
+      `https://api.iugu.com/v1/plans/identifier/${identifier}`
+    );
+
     let response = {};
-    if (plan.hasOwnProperty("id")) {      
+    if (plan.hasOwnProperty("id")) {
       response = await put(`https://api.iugu.com/v1/plans/${plan.id}`, {
-        value_cents: price  * 100,
+        value_cents: price * 100,
       });
     } else {
       response = await post("https://api.iugu.com/v1/plans", {
@@ -74,11 +79,12 @@ module.exports = {
   },
 };
 
-const post = (url, json) => {
+const post = async (url, json) => {
+  const { iugu_token } = await iuguData();
   return axios
     .post(url, json, {
       auth: {
-        username: "f9c20677ea63f0e068e03fcf1e050d6c",
+        username: iugu_token,
         password: "",
       },
     })
@@ -90,12 +96,12 @@ const post = (url, json) => {
     });
 };
 
-
-const put = (url, json) => {
+const put = async (url, json) => {
+  const { iugu_token } = await iuguData();
   return axios
     .put(url, json, {
       auth: {
-        username: "f9c20677ea63f0e068e03fcf1e050d6c",
+        username: iugu_token,
         password: "",
       },
     })
@@ -107,10 +113,11 @@ const put = (url, json) => {
     });
 };
 
-const get = (url, params) => {
+const get = async (url, params) => {
+  const { iugu_token } = await iuguData();
   return axios
     .get(url, {
-      params: { api_token: "f9c20677ea63f0e068e03fcf1e050d6c"}
+      params: { api_token: iugu_token },
     })
     .then((result) => {
       return result.data;
@@ -118,4 +125,18 @@ const get = (url, params) => {
     .catch((err) => {
       return err.response.data;
     });
+};
+
+const iuguData = async () => {
+  // Busca configurações
+  const settings = await Settings.findOne();
+
+  // Verifica se tá tudo certo
+  if (settings) {
+    // Variáveis
+    const { iugu_token, iugu_account_id } = settings;
+    return { iugu_token, iugu_account_id };
+  } else {
+    return { iugu_token: "", iugu_account_id: "" };
+  }
 };

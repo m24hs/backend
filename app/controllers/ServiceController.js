@@ -2,6 +2,7 @@ const { Service } = require("../models");
 
 const {
   formatResponseSequelize,
+  formatResponseOk,
   formatResponseError,
   generateUrlName,
 } = require("../helpers");
@@ -69,7 +70,7 @@ module.exports = {
       if (service) {
         service.destroy();
       }      
-      res.json({});
+      res.json(formatResponseOk({}));
     } catch (error) {
       return res.json(formatResponseError(error.message));
     }    

@@ -13,6 +13,9 @@ module.exports = {
       };
     }
   },
+  formatResponseOk: (response) => {
+    return { status: "success", data: response };
+  },
   formatResponseError: (response) => {
     return { status: "error", data: response };
   },
