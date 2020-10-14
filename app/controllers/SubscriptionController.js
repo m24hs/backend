@@ -1,4 +1,4 @@
-const { Subscription, User, Service } = require("../models");
+const { Settings } = require("../models");
 
 const { formatResponseSequelize, formatResponseError } = require("../helpers");
 
