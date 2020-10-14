@@ -33,7 +33,7 @@ module.exports = {
   async store(req, res) {
     const data = {"title": "ÂSOASDÂSD Gestão Preventiva de Motos", "description": "", "page": "", "price": "50.00", "image": ""};//req.body;
 console.log(data);
-    try {    
+    try {     
       const responseCreatePlan = await Iugu.createPlan({
         name: data.title,
         price: data.price,
