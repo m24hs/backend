@@ -31,7 +31,7 @@ module.exports = {
     res.json(services || {});
   },
   async store(req, res) {
-    const data = req.body;
+    const data = {"title": "ÂSOASDÂSD Gestão Preventiva de Motos", "description": "", "page": "", "price": "50.00", "image": ""};//req.body;
 console.log(data);
     try {    
       const responseCreatePlan = await Iugu.createPlan({
