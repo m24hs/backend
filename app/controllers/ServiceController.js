@@ -32,7 +32,7 @@ module.exports = {
   },
   async store(req, res) {
     const data = req.body;
-
+console.log(data);
     try {    
       const responseCreatePlan = await Iugu.createPlan({
         name: data.title,
