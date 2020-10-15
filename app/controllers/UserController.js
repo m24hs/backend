@@ -37,10 +37,10 @@ module.exports = {
           where: {
             [Op.or]: [
               {
-                cpf_cnpj: cpf_cnpj,
+                cpf_cnpj: data.cpf_cnpj,
               },
               {
-                email: email,
+                email: data.email,
               },
             ],
           },
@@ -48,11 +48,11 @@ module.exports = {
 
       // Validação
       if (userData.dataValues) {
-        if (userData.dataValues.cpf_cnpj == cpf_cnpj) {
+        if (userData.dataValues.cpf_cnpj == data.cpf_cnpj) {
           throw new Error(
             "CPF já cadastrado, favor entrar em contato através do telefone 0800 729 9123."
           );
-        } else if (userData.dataValues.email == email) {
+        } else if (userData.dataValues.email == data.email) {
           throw new Error(
             "Email já cadastrado, favor entrar em contato através do telefone 0800 729 9123."
           );
