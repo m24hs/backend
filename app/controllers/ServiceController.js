@@ -31,7 +31,7 @@ module.exports = {
     res.json(services || {});
   },
   async store(req, res) {
-    const data = JSON.parse( JSON.stringify( req.body ) );
+    const data = req.body;
 
     try {    
       const responseCreatePlan = await Iugu.createPlan({

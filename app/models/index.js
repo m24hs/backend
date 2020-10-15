@@ -10,8 +10,11 @@ sequelize = new Sequelize(config.database, config.username, config.password, {
   ...config,
   define: {
     charset: "utf8",
-    collate: "utf8_general_ci",
+    dialectOptions: {
+      collate: "utf8_general_ci",
+    },
   },
+  sync: { force: true },
 });
 
 fs.readdirSync(__dirname)
