@@ -29,21 +29,7 @@ module.exports = {
   async store(req, res) {
     try {
       // Variáveis auxiliares
-      const {
-        name,
-        email,
-        phone,
-        phone_prefix,
-        cpf_cnpj,
-        zip_code,
-        number,
-        street,
-        city,
-        state,
-        district,
-        complement,
-        origin,
-      } = req.body;
+      const data = req.body;
 
       // Verifica se o usuário já é cadastrado
       userData =
@@ -67,26 +53,26 @@ module.exports = {
             "CPF já cadastrado, favor entrar em contato através do telefone 0800 729 9123."
           );
         } else if (userData.dataValues.email == email) {
-            throw new Error(
-              "Email já cadastrado, favor entrar em contato através do telefone 0800 729 9123."
-            );
+          throw new Error(
+            "Email já cadastrado, favor entrar em contato através do telefone 0800 729 9123."
+          );
         }
       }
 
       // Cria usuário na Iugu
       const iuguUser = await Iugu.createCustomers({
-        name,
-        email,
-        phone,
-        phone_prefix,
-        cpf_cnpj,
-        zip_code,
-        number,
-        street,
-        city,
-        state,
-        district,
-        complement,
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        phone_prefix: data.phone_prefix,
+        cpf_cnpj: data.cpf_cnpj,
+        zip_code: data.zip_code,
+        number: data.number,
+        street: data.street,
+        city: data.city,
+        state: data.state,
+        district: data.district,
+        complement: data.complement,
       });
 
       // Se houver erros
@@ -104,21 +90,7 @@ module.exports = {
 
       // Grava usuário no banco
       const response = await formatResponseSequelize(
-        User.create({
-          name,
-          id_iugu: iuguUser.id,
-          email,
-          phone,
-          phone_prefix,
-          cpf_cnpj,
-          zip_code,
-          number,
-          street,
-          city,
-          state,
-          district,
-          complement,
-        })
+        User.create({ ...data, id_iugu: iuguUser.id })
       );
 
       // Se houver erros
