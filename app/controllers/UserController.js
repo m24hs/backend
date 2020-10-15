@@ -95,6 +95,8 @@ module.exports = {
         console.log(errors);
         if (errors.phone) {
           throw new Error("O telefone informado não é válido.");
+        } else if (errors.zip_code) {
+          throw new Error("O CEP informado não é válido.");
         }
 
         throw new Error("Erro no cadastro, por favor, tente novamente.");
