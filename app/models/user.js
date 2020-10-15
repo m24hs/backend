@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     state: DataTypes.STRING,
     district: DataTypes.STRING,
     complement: DataTypes.STRING,    
+    motorcycle_category: DataTypes.STRING,    
+    motorcycle_year: DataTypes.STRING,    
+    motorcycle_placa: DataTypes.STRING,    
+    motorcycle_renavam: DataTypes.STRING,    
   });
 
   return User;
