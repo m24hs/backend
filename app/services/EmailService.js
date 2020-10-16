@@ -31,6 +31,9 @@ module.exports = {
           user: email,
           pass: email_pass,
         },
+        tls: {
+          rejectUnauthorized: false,
+        },
       });
 
       // Trata conteudo HTML
