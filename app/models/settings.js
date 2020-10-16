@@ -7,6 +7,9 @@ module.exports = (sequelize, DataTypes) => {
     email_pass: DataTypes.STRING,
     email_server: DataTypes.STRING,
     email_port: DataTypes.STRING,
+    home: DataTypes.TEXT("medium"),    
+    about: DataTypes.TEXT("medium"),    
+    contact: DataTypes.TEXT("medium"),    
   });
 
   return Settings;
