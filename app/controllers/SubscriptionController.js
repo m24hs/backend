@@ -8,19 +8,53 @@ module.exports = {
   async index(req, res) {
     // Id
     const id = req.params.id || null;
+    const where = req.query.where || null;
 
     // Consulta
     const join = [
       {
         model: User,
-        required: true,
+        right: true,
+      },
+      {
+        model: Service,
+        require: true,
       },
     ];
+
+    // Consulta
     let subscription = {};
-    if (id !== null) {
+
+    // Se for passado pela iugu
+    if (where === "iugu") {
+      subscription = await Subscription.findOne({
+        include: [
+          {
+            model: User,
+            require: true,
+            where: { id_iugu: id },
+          },
+          {
+            model: Service,
+            require: true,
+          },
+        ],
+      });
+      // Se não encontrar
+      if (!subscription) {
+        const users = await User.findOne({
+          where: {
+            id_iugu: id,
+          },
+        });
+        subscription = { User: users };
+      }
+      // Id usuário
+    } else if (id !== null) {
       subscription = await Subscription.findByPk(id, {
         include: join,
       });
+      // Alterar
     } else {
       subscription = await Subscription.findAll({
         include: join,
@@ -35,29 +69,45 @@ module.exports = {
     const formData = req.body;
 
     try {
-      // Busca plano no db
-      const services = await Service.findOne({
-        where: {
-          url: service,
-        },
-      });
-
-      if (!services) throw new Error("Serviço não encontrado, contate o suporte!");
-
       // Usuário banco
-      const userDB = await User.findAll({
+      const responseUser = await User.findOne({
         where: {
           id_iugu: user,
         },
       });
 
-      // Grava
-      const response = await formatResponseSequelize(
-        Subscription.create({
-          user: userDB[0].dataValues.id,
+      if (!responseUser)
+        throw new Error("Usuário não encontrado, contate o suporte!");
+
+      // Procura assinatura no banco
+      const subscription = await Subscription.findOne({
+        where: {
+          user: responseUser.id,
+        },
+      });
+
+      // Verifica assinatura
+      if (!subscription)
+        throw new Error("Usuário não encontrado, contate o suporte!");
+
+      // Atualiza
+      const responseUpdate = await subscription.update(
+        {
           payment_method: type,
-        })
+        },
+        { returning: true }
       );
+
+      // Erro
+      if (!responseUpdate)
+        throw new Error("Erro na gravação, contate o suporte!");
+      
+      // Busca plano no db
+      const services = await Service.findByPk(responseUpdate.service);
+
+      // Verifica serviços
+      if (!services)
+        throw new Error("Serviço não encontrado, contate o suporte!");
 
       if (type === "credit_card") {
         // Cria token de pagamento
@@ -96,7 +146,9 @@ module.exports = {
 
       // Verifica se deu certo com a cobrança
       if (responseSubscription.hasOwnProperty("errors"))
-        throw new Error("Falha na cobrança, verifique seus dados e tente novamente!")
+        throw new Error(
+          "Falha na cobrança, verifique seus dados e tente novamente!"
+        );
 
       res.json({ status: "success", data: responseSubscription });
     } catch (error) {

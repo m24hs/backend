@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { User } = require("../models");
+const { User, Service, Subscription } = require("../models");
 
 const { formatResponseSequelize, formatResponseError } = require("../helpers");
 
@@ -97,6 +97,32 @@ module.exports = {
       if (response.status === "error") {
         throw new Error("Erro no cadastro, por favor, tente novamente.");
       }
+
+      // Busca serviço no banco
+      const responseService = await Service.findOne({
+        where: {
+          url: data.service_url,
+        },
+      });
+
+      // Se houver erros
+      if (!responseService) {
+        throw new Error("Serviço não encontrado, por favor, tente novamente.");
+      }
+
+      // Grava assinatura
+      const responseSubscription = await formatResponseSequelize(
+        Subscription.create({
+          user: response.data.id,
+          service: responseService.id,
+          payment_method: "",
+        })
+      );
+
+      // Se houver erros
+      if (responseSubscription.status === "error") {
+        throw new Error("Erro no cadastro, por favor, tente novamente. (2)");
+      }      
 
       // Retorna
       return res.json(response);
