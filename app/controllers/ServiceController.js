@@ -14,6 +14,7 @@ module.exports = {
     // Id
     const id = req.params.id || null;
     const where = req.query.where || null;
+    const columns = req.query.columns || null;
 
     // Consulta
     let services = {};
@@ -22,11 +23,14 @@ module.exports = {
         where: {
           url: id,
         },
+        attributes: columns
       });
     } else if (id !== null) {
       services = await Service.findByPk(id);
     } else {
-      services = await Service.findAll();
+      services = await Service.findAll({
+        attributes: columns
+      });
     }
     res.json(services || {});
   },

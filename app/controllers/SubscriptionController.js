@@ -37,6 +37,7 @@ module.exports = {
           {
             model: Service,
             require: true,
+            attributes: ["title"],
           },
         ],
       });
@@ -101,7 +102,7 @@ module.exports = {
       // Erro
       if (!responseUpdate)
         throw new Error("Erro na gravação, contate o suporte!");
-      
+
       // Busca plano no db
       const services = await Service.findByPk(responseUpdate.service);
 
