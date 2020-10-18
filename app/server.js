@@ -8,4 +8,5 @@ server.use(cors());
 server.use(express.json({limit:1024*1024*20, type:'application/json'}));
 server.use(routes);
 
+server.use('/uploads', express.static(process.cwd() + '/uploads'))
 server.listen(process.env.PORT || 3333);
