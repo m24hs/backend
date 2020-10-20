@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     page: DataTypes.TEXT,    
     plan: DataTypes.STRING,    
     price: DataTypes.FLOAT,
+    order: DataTypes.INTEGER,
   });
 
   return Service;

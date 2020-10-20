@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     user: DataTypes.INTEGER,
     service: DataTypes.INTEGER,
     payment_method: DataTypes.STRING,
+    id_iugu: DataTypes.STRING,
   });
 
   Subscription.associate = (models) => {

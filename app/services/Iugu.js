@@ -56,7 +56,7 @@ module.exports = {
       });
     } else {
       response = await post("https://api.iugu.com/v1/plans", {
-        name: name,
+        name: "Assinatura - "+name+" - "+price.replace(".",","),
         identifier: identifier,
         interval: 1,
         interval_type: "months",

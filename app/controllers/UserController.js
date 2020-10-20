@@ -31,6 +31,21 @@ module.exports = {
       // Variáveis auxiliares
       const data = req.body;
 
+      // Verifica se é permitido nas cidades
+      if (
+        !(
+          data.zip_code === "17340-000" ||
+          data.zip_code === "17350-000" ||
+          data.city === "Jaú" ||
+          data.city === "Jau" ||
+          data.city === "Jahu"
+        )
+      ) {        
+        throw new Error(
+          `Ainda não atendemos na sua cidade (${data.city}/${data.state}), entraremos em contato quando nosso serviço estiver disponível na sua região.`
+        );
+      }
+
       // Verifica se o usuário já é cadastrado
       userData =
         (await User.findOne({
@@ -122,7 +137,7 @@ module.exports = {
       // Se houver erros
       if (responseSubscription.status === "error") {
         throw new Error("Erro no cadastro, por favor, tente novamente. (2)");
-      }      
+      }
 
       // Retorna
       return res.json(response);

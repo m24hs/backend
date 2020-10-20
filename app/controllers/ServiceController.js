@@ -10,15 +10,15 @@ const {
 const Iugu = require("../services/Iugu");
 
 // Upload de arquivos
-var path = require('path')
-const crypto = require('crypto');
+var path = require("path");
+const crypto = require("crypto");
 const multer = require("multer");
 let upload = multer({
   storage: multer.diskStorage({
     destination: "uploads/",
-    filename: function (req, file, callback) {      
+    filename: function (req, file, callback) {
       let ext = path.extname(file.originalname);
-      callback(null, Date.now() + crypto.randomBytes(5).toString('hex') + ext);
+      callback(null, Date.now() + crypto.randomBytes(5).toString("hex") + ext);
     },
   }),
 });
@@ -44,6 +44,7 @@ module.exports = {
     } else {
       services = await Service.findAll({
         attributes: columns,
+        order: [["order", "ASC"]],
       });
     }
     res.json(services || {});
@@ -68,22 +69,29 @@ module.exports = {
         const files = req.files;
 
         try {
-          // Cadastra na iugu
-          const responseCreatePlan = await Iugu.createPlan({
-            name: data.title,
-            price: data.price,
-          });
+          // Só cadastra se houver valor
+          let iuguPlan = "";
+          if (data.price > 0) {
+            // Cadastra na iugu
+            const responseCreatePlan = await Iugu.createPlan({
+              name: data.title,
+              price: data.price,
+            });
 
-          // Exibe erro
-          if (responseCreatePlan.hasOwnProperty("errors")) {
-            throw new Error("Não foi possivel cadastrar o plano!");
+            // Exibe erro
+            if (responseCreatePlan.hasOwnProperty("errors")) {
+              throw new Error("Não foi possivel cadastrar o plano!");
+            }
+
+            // Nome do plano na iugu
+            iuguPlan = responseCreatePlan.identifier
           }
 
           // Monta objeto de atualização
           let update = {
             ...data,
             url: generateUrlName(data.title),
-            plan: responseCreatePlan.identifier,
+            plan: iuguPlan,
           };
 
           // Grava a imagem

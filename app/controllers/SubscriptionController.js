@@ -138,18 +138,39 @@ module.exports = {
           throw new Error("Não foi possivel concluir o pagamento!");
       }
 
-      // Cria assinatura
-      const responseSubscription = await Iugu.createSubscription({
-        user,
-        plan: services.plan,
-        payable_with: type,
-      });
+      // Tenta 3x
+      let responseSubscription = {};
+      const forLoop = async (_) => {
+        for (let index = 1; index <= 3; index++) {
+          // Cria assinatura
+          responseSubscription = await Iugu.createSubscription({
+            user,
+            plan: services.plan,
+            payable_with: type,
+          });
 
-      // Verifica se deu certo com a cobrança
-      if (responseSubscription.hasOwnProperty("errors"))
-        throw new Error(
-          "Falha na cobrança, verifique seus dados e tente novamente!"
-        );
+          // Verifica se deu certo com a cobrança
+          if (responseSubscription.hasOwnProperty("errors")) {
+            if (index === 3) {
+              throw new Error(
+                "Falha na cobrança, verifique seus dados e tente novamente!"
+              );
+            }
+          } else {
+            if (
+              responseSubscription.hasOwnProperty("id") &&
+              responseSubscription.id !== ""
+            ) {
+              break;
+            }
+          }
+        }
+      };
+      await forLoop();
+      console.log(responseSubscription);
+      await subscription.update({
+        id_iugu: responseSubscription.id,
+      });
 
       res.json({ status: "success", data: responseSubscription });
     } catch (error) {
