@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     home: DataTypes.TEXT("medium"),    
     about: DataTypes.TEXT("medium"),    
     contact: DataTypes.TEXT("medium"),    
+    partners: DataTypes.TEXT("medium"),    
   });
 
   return Settings;

@@ -6,6 +6,7 @@ const VendasController = require("./controllers/VendasController");
 const UserController = require("./controllers/UserController");
 const ServiceController = require("./controllers/ServiceController");
 const SubscriptionController = require("./controllers/SubscriptionController");
+const PartnersController = require("./controllers/PartnersController");
 const SettingsController = require("./controllers/SettingsController");
 const ContactController = require("./controllers/ContactController");
 
@@ -27,6 +28,10 @@ routes.delete("/services/:id?", ServiceController.delete);
 
 routes.get("/subscriptions/:id?", SubscriptionController.index);
 routes.post("/subscriptions/:user/:type", SubscriptionController.store);
+
+routes.get("/partners/:id?", PartnersController.index);
+routes.post("/partners", PartnersController.store);
+routes.delete("/partners/:id?", PartnersController.delete);
 
 routes.get("/settings", SettingsController.index);
 routes.post("/settings", SettingsController.store);

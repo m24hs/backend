@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     motorcycle_year: DataTypes.STRING,    
     motorcycle_placa: DataTypes.STRING,    
     motorcycle_renavam: DataTypes.STRING,    
+    origin: DataTypes.STRING,    
   });
 
   return User;
