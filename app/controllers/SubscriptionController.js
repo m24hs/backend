@@ -37,7 +37,7 @@ module.exports = {
           {
             model: Service,
             require: true,
-            attributes: ["title"],
+            attributes: ["title","url"],
           },
         ],
       });
