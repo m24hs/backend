@@ -1,5 +1,7 @@
+// Models
 const { Settings } = require("../models");
 
+// Auxiliares
 const { formatResponseSequelize, formatResponseError } = require("../helpers");
 
 module.exports = {

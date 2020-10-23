@@ -1,5 +1,5 @@
 // Models
-const { Partner } = require("../models");
+const { Post } = require("../models");
 
 // Auxiliares
 const {
@@ -28,13 +28,13 @@ module.exports = {
     const id = req.params.id || null;
 
     // Consulta
-    let partners = {};
+    let posts = {};
     if (id !== null) {
-      partners = await Partner.findByPk(id);
+      posts = await Post.findByPk(id);
     } else {
-      partners = await Partner.findAll();
+      posts = await Post.findAll();
     }
-    res.json(partners || {});
+    res.json(posts || {});
   },
   async store(req, res) {
     return upload.single("image")(req, res, async (err) => {
@@ -59,7 +59,7 @@ module.exports = {
 
           // Grava no banco
           const response = await formatResponseSequelize(
-            Partner.upsert(update, { returning: true })
+            Post.upsert(update, { returning: true })
           );
 
           return res.json(response);
@@ -76,7 +76,7 @@ module.exports = {
       if (id === null) throw new Error("ID não encontrado.");
 
       // Procura
-      const partner = await Partner.findByPk(id);
+      const partner = await Post.findByPk(id);
 
       // Deleta
       if (partner) {

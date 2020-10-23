@@ -1,4 +1,5 @@
 module.exports = {
+  // Formata resposta do banco
   formatResponseSequelize: async (request) => {
     try {
       const post = await request;
@@ -13,12 +14,15 @@ module.exports = {
       };
     }
   },
+  // Formata resposta sucesso
   formatResponseOk: (response) => {
     return { status: "success", data: response };
   },
+  // Formata resposta com erro
   formatResponseError: (response) => {
     return { status: "error", data: response };
   },
+  // Gera nome pra url
   generateUrlName: (str) => {
     const original =
       "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝŔÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿŕ";

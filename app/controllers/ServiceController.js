@@ -1,6 +1,7 @@
+// Models
 const { Service } = require("../models");
 
-// Funções auxiliares
+// Auxiliares
 const {
   formatResponseSequelize,
   formatResponseOk,

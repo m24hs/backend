@@ -1,6 +1,6 @@
+// Auxiliares
 const Mail = require("../services/EmailService");
-
-const { formatResponseSequelize, formatResponseError } = require("../helpers");
+const { formatResponseOk } = require("../helpers");
 
 module.exports = {
   async store(req, res) {
@@ -16,6 +16,6 @@ module.exports = {
 
     // Envia
     const response = await Mail.send({ title: "Novo contato no site", content: html });
-    res.json(response);
+    res.json(formatResponseOk(response));
   },
 };

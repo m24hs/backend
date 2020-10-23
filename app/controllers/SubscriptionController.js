@@ -1,7 +1,8 @@
+// Models
 const { User, Subscription, Service } = require("../models");
 
-const { formatResponseSequelize, formatResponseError } = require("../helpers");
-
+// Auxiliares
+const { formatResponseError } = require("../helpers");
 const Iugu = require("../services/Iugu");
 
 module.exports = {

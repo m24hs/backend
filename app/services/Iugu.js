@@ -1,14 +1,16 @@
 // Models
 const { Settings } = require("../models");
 
+// Auxiliares
 const axios = require("axios").default;
-
 const { generateUrlName } = require("../helpers");
 
 module.exports = {
+  // Cria usuários
   async createCustomers(params) {
     return post("https://api.iugu.com/v1/customers", params);
   },
+  // Cria tipo de pagamento
   async createPaymentToken(params) {
     const { iugu_account_id } = await iuguData();
     const {
@@ -33,6 +35,7 @@ module.exports = {
       test: true,
     });
   },
+  // Cria método de pagamento para o usuário
   async createPaymentMethod(params) {
     const { user, token, description } = params;
     return post(`https://api.iugu.com/v1/customers/${user}/payment_methods`, {
@@ -41,6 +44,7 @@ module.exports = {
       set_as_default: true,
     });
   },
+  // Cria plano de assinatura
   async createPlan(params) {
     const { name, price } = params;
     const identifier = generateUrlName(name);
@@ -65,6 +69,7 @@ module.exports = {
     }
     return response;
   },
+  // Cria Assinatura
   async createSubscription(params) {
     const { user, plan, payable_with } = params;
     return post("https://api.iugu.com/v1/subscriptions", {
@@ -127,6 +132,7 @@ const get = async (url, params) => {
     });
 };
 
+// Dados da IUGU
 const iuguData = async () => {
   // Busca configurações
   const settings = await Settings.findOne();

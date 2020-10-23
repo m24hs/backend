@@ -1,8 +1,9 @@
-const { Op } = require("sequelize");
+// Models
 const { User, Service, Subscription } = require("../models");
+const { Op } = require("sequelize");
 
+// Auxiliares
 const { formatResponseSequelize, formatResponseError } = require("../helpers");
-
 const Iugu = require("../services/Iugu");
 
 module.exports = {
