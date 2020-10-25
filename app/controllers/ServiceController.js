@@ -7,6 +7,7 @@ const {
   formatResponseOk,
   formatResponseError,
   generateUrlName,
+  compressImage
 } = require("../helpers");
 const Iugu = require("../services/Iugu");
 
@@ -97,7 +98,12 @@ module.exports = {
 
           // Grava a imagem
           if (files.image) {
-            update.image = files.image[0].path;
+            const compressedImagePath = await compressImage(files.image[0].path,1024);
+            if (compressedImagePath !== "") {
+              update.image = compressedImagePath;
+            } else {
+              throw new Error("Não foi possivel fazer o uplaod da imagem");
+            }            
           }
 
           // Contrato

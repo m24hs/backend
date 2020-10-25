@@ -6,6 +6,7 @@ const {
   formatResponseSequelize,
   formatResponseOk,
   formatResponseError,
+  compressImage
 } = require("../helpers");
 
 // Upload de arquivos
@@ -26,14 +27,21 @@ module.exports = {
   async index(req, res) {
     // Id
     const id = req.params.id || null;
+    const page = req.query.page || null;
 
     // Consulta
     let posts = {};
     if (id !== null) {
       posts = await Post.findByPk(id);
+    } else if (page !== null) {
+      posts = await Post.findAndCountAll({
+        limit: 10,
+        offset: (page * 10) - 10,
+      });
     } else {
       posts = await Post.findAll();
     }
+
     res.json(posts || {});
   },
   async store(req, res) {
@@ -49,12 +57,17 @@ module.exports = {
         try {
           // Monta objeto de atualização
           let update = {
-            ...data
+            ...data,
           };
 
           // Grava a imagem
           if (file) {
-            update.image = file.path;
+            const compressedImagePath = await compressImage(file.path,1024);
+            if (compressedImagePath !== "") {
+              update.image = compressedImagePath;
+            } else {
+              throw new Error("Não foi possivel fazer o uplaod da imagem");
+            }
           }
 
           // Grava no banco

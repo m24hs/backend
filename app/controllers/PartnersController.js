@@ -6,6 +6,7 @@ const {
   formatResponseSequelize,
   formatResponseOk,
   formatResponseError,
+  compressImage
 } = require("../helpers");
 
 // Upload de arquivos
@@ -54,7 +55,12 @@ module.exports = {
 
           // Grava a imagem
           if (file) {
-            update.image = file.path;
+            const compressedImagePath = await compressImage(file.path,512);
+            if (compressedImagePath !== "") {
+              update.image = compressedImagePath;
+            } else {
+              throw new Error("Não foi possivel fazer o uplaod da imagem");
+            }
           }
 
           // Grava no banco

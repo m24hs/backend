@@ -2,7 +2,6 @@ const express = require("express");
 const routes = express.Router();
 
 // Controllers
-const VendasController = require("./controllers/VendasController");
 const UserController = require("./controllers/UserController");
 const ServiceController = require("./controllers/ServiceController");
 const SubscriptionController = require("./controllers/SubscriptionController");
