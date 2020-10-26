@@ -6,7 +6,11 @@ const { formatResponseSequelize, formatResponseError } = require("../helpers");
 
 module.exports = {
   async index(req, res) {
-    const settings = await Settings.findOne();
+    const columns = req.query.columns || null;
+
+    const settings = await Settings.findOne({
+      attributes: columns,
+    });
     res.json(settings || {});
   },
   async store(req, res) {
