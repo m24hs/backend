@@ -4,6 +4,7 @@ const { User, Subscription, Service } = require("../models");
 // Auxiliares
 const { formatResponseError } = require("../helpers");
 const Iugu = require("../services/Iugu");
+const moment = require("moment");
 
 module.exports = {
   async index(req, res) {
@@ -38,7 +39,7 @@ module.exports = {
           {
             model: Service,
             require: true,
-            attributes: ["title","url"],
+            attributes: ["title", "url"],
           },
         ],
       });
@@ -51,15 +52,21 @@ module.exports = {
         });
         subscription = { User: users };
       }
+      subscription = formatResponseIndex(subscription);
       // Id usuário
     } else if (id !== null) {
       subscription = await Subscription.findByPk(id, {
         include: join,
       });
+      subscription = formatResponseIndex(subscription);
       // Alterar
     } else {
       subscription = await Subscription.findAll({
         include: join,
+      });
+      // Trata retorno
+      subscription = subscription.map((item) => {
+        return formatResponseIndex(item);
       });
     }
     res.json(subscription || {});
@@ -178,4 +185,18 @@ module.exports = {
       res.json(formatResponseError(error.message));
     }
   },
+};
+
+// Formata o retorno
+const formatResponseIndex = (item) => {
+  item = item.dataValues;
+  item.payment_method =
+    item.payment_method === "credit_card"
+      ? "Cartão de Crédito"
+      : item.payment_method === "bank_slip"
+      ? "Boleto"
+      : "";
+  item.updatedAt = moment(item.updatedAt).format("DD/MM/YYYY HH:mm:ss");
+  item.status = item.payment_method === "" ? "Incompleta" : "Gerada";
+  return item;
 };

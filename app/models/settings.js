@@ -1,7 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
   const Settings = sequelize.define("Settings", {
     iugu_token: DataTypes.STRING,
+    iugu_token_production: DataTypes.STRING,
     iugu_account_id: DataTypes.STRING,
+    iugu_test: DataTypes.BOOLEAN,
     name: DataTypes.STRING,
     email: DataTypes.STRING,
     email_pass: DataTypes.STRING,

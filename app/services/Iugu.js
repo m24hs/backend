@@ -12,7 +12,7 @@ module.exports = {
   },
   // Cria tipo de pagamento
   async createPaymentToken(params) {
-    const { iugu_account_id } = await iuguData();
+    const { iugu_account_id, iugu_test } = await iuguData();
     const {
       number,
       verification_value,
@@ -32,7 +32,7 @@ module.exports = {
       },
       account_id: iugu_account_id,
       method: "credit_card",
-      test: true,
+      test: iugu_test,
     });
   },
   // Cria método de pagamento para o usuário
@@ -60,7 +60,7 @@ module.exports = {
       });
     } else {
       response = await post("https://api.iugu.com/v1/plans", {
-        name: "Assinatura - "+name+" - "+price.replace(".",","),
+        name: "Assinatura - " + name + " - " + price.replace(".", ","),
         identifier: identifier,
         interval: 1,
         interval_type: "months",
@@ -140,9 +140,18 @@ const iuguData = async () => {
   // Verifica se tá tudo certo
   if (settings) {
     // Variáveis
-    const { iugu_token, iugu_account_id } = settings;
-    return { iugu_token, iugu_account_id };
+    const {
+      iugu_token,
+      iugu_token_production,
+      iugu_account_id,
+      iugu_test,
+    } = settings;
+    return {
+      iugu_token: iugu_test === false ? iugu_token_production : iugu_token,
+      iugu_account_id,
+      iugu_test,
+    };
   } else {
-    return { iugu_token: "", iugu_account_id: "" };
+    return { iugu_token: "", iugu_account_id: "", iugu_test: true };
   }
 };

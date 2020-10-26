@@ -8,6 +8,7 @@ const {
   formatResponseError,
   compressImage
 } = require("../helpers");
+const moment = require("moment");
 
 // Upload de arquivos
 var path = require("path");
@@ -32,8 +33,14 @@ module.exports = {
     let partners = {};
     if (id !== null) {
       partners = await Partner.findByPk(id);
+      // Trata retorno
+      partners = formatResponseIndex(partners);      
     } else {
       partners = await Partner.findAll();
+      // Trata retorno
+      partners = partners.map((item) => {
+        return formatResponseIndex(item);
+      });      
     }
     res.json(partners || {});
   },
@@ -93,4 +100,11 @@ module.exports = {
       return res.json(formatResponseError(error.message));
     }
   },
+};
+
+// Formata o retorno
+const formatResponseIndex = (item) => {
+  item = item.dataValues;
+  item.updatedAt = moment(item.updatedAt).format("DD/MM/YYYY HH:mm:ss");
+  return item;
 };

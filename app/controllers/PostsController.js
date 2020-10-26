@@ -6,8 +6,9 @@ const {
   formatResponseSequelize,
   formatResponseOk,
   formatResponseError,
-  compressImage
+  compressImage,
 } = require("../helpers");
+const moment = require("moment");
 
 // Upload de arquivos
 var path = require("path");
@@ -33,13 +34,21 @@ module.exports = {
     let posts = {};
     if (id !== null) {
       posts = await Post.findByPk(id);
+      // Trata retorno
+      posts = formatResponseIndex(posts);
     } else if (page !== null) {
       posts = await Post.findAndCountAll({
         limit: 10,
-        offset: (page * 10) - 10,
+        offset: page * 10 - 10,
       });
+      // Trata retorno
+      posts = formatResponseIndex(posts);
     } else {
       posts = await Post.findAll();
+      // Trata retorno
+      posts = posts.map((item) => {
+        return formatResponseIndex(item);
+      });
     }
 
     res.json(posts || {});
@@ -62,7 +71,7 @@ module.exports = {
 
           // Grava a imagem
           if (file) {
-            const compressedImagePath = await compressImage(file.path,1024);
+            const compressedImagePath = await compressImage(file.path, 1024);
             if (compressedImagePath !== "") {
               update.image = compressedImagePath;
             } else {
@@ -100,4 +109,11 @@ module.exports = {
       return res.json(formatResponseError(error.message));
     }
   },
+};
+
+// Formata o retorno
+const formatResponseIndex = (item) => {
+  item = item.dataValues;
+  item.updatedAt = moment(item.updatedAt).format("DD/MM/YYYY HH:mm:ss");
+  return item;
 };

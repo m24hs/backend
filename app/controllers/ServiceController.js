@@ -7,9 +7,10 @@ const {
   formatResponseOk,
   formatResponseError,
   generateUrlName,
-  compressImage
+  compressImage,
 } = require("../helpers");
 const Iugu = require("../services/Iugu");
+const moment = require("moment");
 
 // Upload de arquivos
 var path = require("path");
@@ -41,14 +42,21 @@ module.exports = {
         },
         attributes: columns,
       });
+      services = formatResponseIndex(services);
     } else if (id !== null) {
       services = await Service.findByPk(id);
+      services = formatResponseIndex(services);
     } else {
       services = await Service.findAll({
         attributes: columns,
         order: [["order", "ASC"]],
       });
+      // Trata retorno
+      services = services.map((item) => {
+        return formatResponseIndex(item);
+      });
     }
+
     res.json(services || {});
   },
   async store(req, res) {
@@ -86,7 +94,7 @@ module.exports = {
             }
 
             // Nome do plano na iugu
-            iuguPlan = responseCreatePlan.identifier
+            iuguPlan = responseCreatePlan.identifier;
           }
 
           // Monta objeto de atualização
@@ -98,12 +106,15 @@ module.exports = {
 
           // Grava a imagem
           if (files.image) {
-            const compressedImagePath = await compressImage(files.image[0].path,1024);
+            const compressedImagePath = await compressImage(
+              files.image[0].path,
+              1024
+            );
             if (compressedImagePath !== "") {
               update.image = compressedImagePath;
             } else {
               throw new Error("Não foi possivel fazer o uplaod da imagem");
-            }            
+            }
           }
 
           // Contrato
@@ -141,4 +152,12 @@ module.exports = {
       return res.json(formatResponseError(error.message));
     }
   },
+};
+
+// Formata o retorno
+const formatResponseIndex = (item) => {
+  item = item.dataValues;
+  item.price = item.price && item.price.toFixed(2).replace(".", ",");
+  item.updatedAt = moment(item.updatedAt).format("DD/MM/YYYY HH:mm:ss");
+  return item;
 };
