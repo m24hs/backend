@@ -42,7 +42,9 @@ module.exports = {
         offset: page * 10 - 10,
       });
       // Trata retorno
-      posts = formatResponseIndex(posts);
+      posts.rows = posts.rows.map((item) => {
+        return formatResponseIndex(item);
+      });      
     } else {
       posts = await Post.findAll();
       // Trata retorno
