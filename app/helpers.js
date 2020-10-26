@@ -49,7 +49,7 @@ module.exports = {
     return newStr;
   },
   compressImage: (path, size) => {
-    const newPath = path.split(".")[0] + ".jpg";
+    const newPath = path.split(".")[0] + ".jpg"; 
 
     return sharp(path)
       .resize(size)
