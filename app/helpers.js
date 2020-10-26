@@ -49,12 +49,12 @@ module.exports = {
     return newStr;
   },
   compressImage: (path, size) => {
-    const newPath = path.split(".")[0] + ".webp";
+    const newPath = path.split(".")[0] + ".jpg";
 
     return sharp(path)
       .resize(size)
-      .toFormat("webp")
-      .webp({
+      .toFormat("jpeg")
+      .jpeg({
         quality: 80,
       })
       .toBuffer()
