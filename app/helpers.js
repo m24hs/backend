@@ -72,7 +72,7 @@ module.exports = {
           }
         });
 
-        //Agora vamos armazenar esse buffer no novo caminho
+        // Agora vamos armazenar esse buffer no novo caminho
         fs.writeFile(newPath, data, (err) => {
           if (err) {
             // Já aqui um erro significa que o upload falhou, então é importante que o usuário saiba.
