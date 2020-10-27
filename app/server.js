@@ -19,7 +19,7 @@ server.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Credentials", true);
   next();
 });
-server.use(express.json({ limit: 1024 * 1024 * 20, type: "application/json" }));
+server.use(express.json({ limit: 1024 * 1024 * 20, type: "application/json" })); 
 server.use(routes);
 server.use("/uploads", express.static(process.cwd() + "/uploads"));
 
