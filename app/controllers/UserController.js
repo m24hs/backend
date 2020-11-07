@@ -31,15 +31,18 @@ module.exports = {
     try {
       // Variáveis auxiliares
       const data = req.body;
+      const cep = parseInt(data.zip_code.replace("-",""));
 
       // Verifica se é permitido nas cidades
       if (
         !(
-          data.zip_code === "17340-000" ||
-          data.zip_code === "17350-000" ||
-          data.city === "Jaú" ||
-          data.city === "Jau" ||
-          data.city === "Jahu"
+          cep === 17340000 || // Barra
+          cep === 17350000 || // Igaraçu
+          (cep >= 17200001 && cep <= 17229999) || // Jau          
+          (cep >= 18680000 && cep <= 18689999) || // Lencois          
+          (cep >= 17290000 && cep <= 17299999) || // Macatuba      
+          (cep >= 17300000 && cep <= 17319999) || // Dois Corregos      
+          (cep >= 17280000 && cep <= 17289999)  // Pederneiras
         )
       ) {        
         throw new Error(
