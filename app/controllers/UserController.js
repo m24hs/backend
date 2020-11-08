@@ -31,25 +31,28 @@ module.exports = {
     try {
       // Variáveis auxiliares
       const data = req.body;
-      const cep = parseInt(data.zip_code.replace("-",""));
+      const cep = parseInt(data.zip_code.replace("-", ""));
 
       // Verifica se é permitido nas cidades
       if (
         !(
-          cep === 17340000 || // Barra
-          cep === 17350000 || // Igaraçu
-          (cep >= 17200001 && cep <= 17229999) || // Jau          
-          (cep >= 18680000 && cep <= 18689999) || // Lencois          
-          (cep >= 17290000 && cep <= 17299999) || // Macatuba      
-          (cep >= 17300000 && cep <= 17319999) || // Dois Corregos      
-          (cep >= 17280000 && cep <= 17289999)  // Pederneiras
+          (
+            cep === 17340000 || // Barra
+            cep === 17350000 || // Igaraçu
+            (cep >= 17200001 && cep <= 17229999) || // Jau
+            (cep >= 18680000 && cep <= 18689999) || // Lencois
+            (cep >= 17290000 && cep <= 17299999) || // Macatuba
+            (cep >= 17300000 && cep <= 17319999) || // Dois Corregos
+            (cep >= 17280000 && cep <= 17289999)
+          ) // Pederneiras
         )
-      ) {        
+      ) {
         throw new Error(
           `Ainda não atendemos na sua cidade (${data.city}/${data.state}), entraremos em contato quando nosso serviço estiver disponível na sua região.`
         );
       }
 
+      /*
       // Verifica se o usuário já é cadastrado
       userData =
         (await User.findOne({
@@ -64,19 +67,20 @@ module.exports = {
             ],
           },
         })) || {};
-
-      // Validação
-      if (userData.dataValues) {
-        if (userData.dataValues.cpf_cnpj == data.cpf_cnpj) {
-          throw new Error(
-            "CPF já cadastrado, favor entrar em contato através do telefone 0800 729 9123."
-          );
-        } else if (userData.dataValues.email == data.email) {
-          throw new Error(
-            "Email já cadastrado, favor entrar em contato através do telefone 0800 729 9123."
-          );
-        }
-      }
+      
+        // Validação
+        if (userData.dataValues) {
+          if (userData.dataValues.cpf_cnpj == data.cpf_cnpj) {
+            throw new Error(
+              "CPF já cadastrado, favor entrar em contato através do telefone 0800 729 9123."
+            );
+          } else if (userData.dataValues.email == data.email) {
+            throw new Error(
+              "Email já cadastrado, favor entrar em contato através do telefone 0800 729 9123."
+            );
+          }
+        }        
+      */
 
       // Cria usuário na Iugu
       const iuguUser = await Iugu.createCustomers({
